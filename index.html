@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tuscany Cycling Holiday: Premium Hotels & Local Dining</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        .route-overview {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .route-visual {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            border-radius: 15px;
+        }
+        .route-point {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            min-width: 80px;
+        }
+        .route-circle {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .route-arrow {
+            font-size: 1.5em;
+            color: #666;
+            margin: 0 10px;
+        }
+        .city-name {
+            font-size: 0.9em;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .day-section {
+            background: white;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .day-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .day-number {
+            background: rgba(255,255,255,0.2);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.5em;
+        }
+        .day-info h3 {
+            margin: 0 0 10px 0;
+            font-size: 1.8em;
+        }
+        .day-info p {
+            margin: 0;
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+        
+        .day-content {
+            padding: 30px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        .day-details {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .accommodation-card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #e74c3c;
+        }
+        .accommodation-card h4 {
+            margin: 0 0 10px 0;
+            color: #333;
+            font-size: 1.3em;
+        }
+        .price-tag {
+            background: #e74c3c;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+        .features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        .feature-badge {
+            background: #27ae60;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.85em;
+            display: inline-block;
+        }
+        .swimming { background: #3498db; }
+        .gravel { background: #e67e22; }
+        .train { background: #9b59b6; }
+        .thermal { background: #e74c3c; }
+        .local-fav { background: #e91e63; }
+        
+        .route-map {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .elevation-chart {
+            width: 100%;
+            height: 150px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 8px;
+            margin: 15px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        .elevation-line {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 70%;
+            background: rgba(255,255,255,0.3);
+            border-radius: 0 0 8px 8px;
+        }
+        .elevation-labels {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            color: white;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+        .distance-info {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .distance-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .distance-value {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #e74c3c;
+        }
+        .distance-label {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .gravel-info {
+            background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+        .gravel-info h5 {
+            margin: 0 0 10px 0;
+            font-size: 1.1em;
+        }
+        
+        .dining-section {
+            margin-top: 20px;
+            padding: 20px;
+            background: linear-gradient(135deg, #e8f5e8 0%, #d4edda 100%);
+            border-radius: 10px;
+        }
+        .dining-section h4 {
+            margin: 0 0 15px 0;
+            color: #155724;
+        }
+        .restaurant-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .restaurant-name {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        .restaurant-type {
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 5px;
+        }
+        .local-note {
+            background: #ffe6e6;
+            color: #721c24;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.85em;
+            margin-top: 8px;
+            border-left: 3px solid #e91e63;
+        }
+        
+        .stats {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+        }
+        .stat-item {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 2em;
+            font-weight: bold;
+            display: block;
+        }
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+        
+        @media (max-width: 768px) {
+            .day-content {
+                grid-template-columns: 1fr;
+            }
+            .distance-info {
+                grid-template-columns: 1fr;
+            }
+            .route-visual {
+                flex-direction: column;
+            }
+            .route-arrow {
+                transform: rotate(90deg);
+                margin: 10px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚴‍♂️ Tuscany Cycling Holiday</h1>
+            <p>7 Days • 285km • Premium Hotels & Local Italian Dining • September 2025</p>
+        </div>
+        
+        <div class="route-overview">
+            <h2>📍 Your Complete Route Overview</h2>
+            <div class="route-visual">
+                <div class="route-point">
+                    <div class="route-circle" style="background: #e74c3c;">1</div>
+                    <div class="city-name">PISA</div>
+                </div>
+                <div class="route-arrow">→</div>
+                <div class="route-point">
+                    <div class="route-circle" style="background: #27ae60;">2</div>
+                    <div class="city-name">LUCCA</div>
+                </div>
+                <div class="route-arrow">🚂</div>
+                <div class="route-point">
+                    <div class="route-circle" style="background: #f39c12;">3</div>
+                    <div class="city-name">VOLTERRA</div>
+                </div>
+                <div class="route-arrow">→</div>
+                <div class="route-point">
+                    <div class="route-circle" style="background: #e67e22;">4</div>
+                    <div class="city-name">SIENA</div>
+                </div>
+                <div class="route-arrow">→</div>
+                <div class="route-point">
+                    <div class="route-circle" style="background: #3498db;">5</div>
+                    <div class="city-name">LAKE TRASIMENO</div>
+                </div>
+                <div class="route-arrow">→</div>
+                <div class="route-point">
+                    <div class="route-circle" style="background: #9b59b6;">6</div>
+                    <div class="city-name">CORTONA</div>
+                </div>
+                <div class="route-arrow">🚂</div>
+                <div class="route-point">
+                    <div class="route-circle" style="background: #e74c3c;">7</div>
+                    <div class="city-name">PISA</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Day 1: Pisa -->
+        <div class="day-section">
+            <div class="day-header">
+                <div class="day-number">1</div>
+                <div class="day-info">
+                    <h3>Pisa - Arrival Day</h3>
+                    <p>Bike collection • Optional coastal ride • Sea swimming</p>
+                </div>
+            </div>
+            <div class="day-content">
+                <div class="day-details">
+                    <div class="accommodation-card">
+                        <div class="price-tag">€95/night</div>
+                        <h4>B&B Hotel Pisa</h4>
+                        <p><strong>Location:</strong> Modern hotel near Galilei Airport, 15 min to center<br>
+                        <strong>Features:</strong> Clean rooms, excellent breakfast, free parking & WiFi<br>
+                        <strong>Why chosen:</strong> Highly rated by business travelers and cyclists</p>
+                        <div class="features">
+                            <div class="feature-badge">🚗 Free Parking</div>
+                            <div class="feature-badge">🚴 Bike Storage</div>
+                            <div class="feature-badge">🍳 Excellent Breakfast</div>
+                        </div>
+                    </div>
+                    <div class="dining-section">
+                        <h4>🍽️ Local Italian Dining</h4>
+                        <div class="restaurant-item">
+                            <div class="restaurant-name">Osteria I Santi</div>
+                            <div class="restaurant-type">Traditional Tuscan • Wild boar ragù specialty • €25-35</div>
+                            <div class="local-note">📍 Local favorite for authentic Pisan cuisine away from tourist areas</div>
+                        </div>
+                        <div class="restaurant-item">
+                            <div class="restaurant-name">Pasticceria Federico</div>
+                            <div class="restaurant-type">Morning coffee & traditional pastries • €5-8</div>
+                            <div class="local-note">☕ Where locals get their morning cappuccino</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="route-map">
+                    <h4>📊 Route Profile</h4>
+                    <div class="elevation-chart">
+                        <div class="elevation-line" style="clip-path: polygon(0% 100%, 20% 95%, 40% 90%, 60% 85%, 80% 80%, 100% 75%, 100% 100%);"></div>
+                        <div class="elevation-labels">Sea Level → 25m</div>
+                    </div>
+                    <div class="distance-info">
+                        <div class="distance-item">
+                            <div class="distance-value">35km</div>
+                            <div class="distance-label">Optional Distance</div>
+                        </div>
+                        <div class="distance-item">
+                            <div class="distance-value">50m</div>
+                            <div class="distance-label">Total Elevation</div>
+                        </div>
+                        <div class="distance-item">
+                            <div class="distance-value">30%</div>
+                            <div class="distance-label">Gravel Content</div>
+                        </div>
+                    </div>
+                    <div class="gravel-info">
+                        <h5>🛤️ Route Options</h5>
+                        <div>• Test ride around city center<br>
+                        • Optional: Marina di Pisa coastal path<br>
+                        • Beach swimming at marina</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Day 2: Lucca -->
+        <div class="day-section">
+            <div class="day-header">
+                <div class="day-number">2</div>
+                <div class="day-info">
+                    <h3>Lucca - Apuan Alps Gravel</h3>
+                    <p>Train to Lucca • Mountain gravel cycling • Thermal baths</p>
+                </div>
+            </div>
+            <div class="day-content">
+                <div class="day-details">
+                    <div class="accommodation-card">
+                        <div class="price-tag">€110/night</div>
+                        <h4>Villa San Martino B&B</h4>
+                        <p><strong>Location:</strong> Within Lucca's historic walls<br>
+                        <strong>Features:</strong> Charming rooms with antiques, peaceful garden, AC<br>
+                        <strong>Alternative:</strong> Al Porto Di Lucca B&B (€95/night) - historic property</p>
+                        <div class="features">
+                            <div class="feature-badge">🏰 Historic Center</div>
+                            <div class="feature-badge">❄️ Air Conditioning</div>
+                            <div class="feature-badge">🌳 Garden Setting</div>
+                        </div>
+                    </div>
+                    <div class="dining-section">
+                        <h4>🍽️ Local Italian Dining</h4>
+                        <div class="restaurant-item">
+                            <div class="restaurant-name">Trattoria da Giulio</div>
+                            <div class="restaurant-type">Historic osteria (since 1944) • Tortelli lucchesi • €18-28</div>
+                            <div class="local-note">⭐ Two locals recommended this when asked for authentic Lucchese food</div>
+                        </div>
+                        <div class="restaurant-item">
+                            <div class="restaurant-name">Osteria San Giorgio</div>
+                            <div class="restaurant-type">Mountain rifugio • Traditional soups • €15-22</div>
+                            <div class="local-note">🏔️ Perfect lunch stop in the Apuan Alps</div>
+                        </div>
+                        <div class="restaurant-item">
+                            <div class="restaurant-name">Da Rosolo</div>
+                            <div class="restaurant-type">Wild boar stew on polenta • Tuscan classics • €20-30</div>
+                            <div class="local-note">🐗 Famous among locals for their wild boar dishes</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="route-map">
+                    <h4>📊 Premium Gravel Route</h4>
+                    <div class="elevation-chart">
+                        <div class="elevation-line" style="clip-path: polygon(0% 100%, 10% 85%, 25% 60%, 40% 30%, 60% 20%, 75% 15%, 90% 35%, 100% 50%, 100% 100%);"></div>
+                        <div class="elevation-labels">45m → 850m</div>
+                    </div>
+                    <div class="distance-info">
+                        <div class="distance-item">
+                            <div class="distance-value">55km</div>
+                            <div class="distance-label">Cycling Distance</div>
+                        </div>
+                        <div class="distance-item">
+                            <div class="distance-value">1,200m</div>
+                            <div class="distance-label">Elevation Gain</div>
+                        </div>
+                        <div class="distance-item">
+                            <div class="distance-value">85%</div>
+                            <div class="distance-label">Gravel Content</div>
+                        </div>
+                    </div>
+                    <div class="gravel-info">
+                        <h5>🛤️ Apuan Alps Mountain Gravel</h5>
+                        <div>• Lucca → Bagni di Lucca thermal baths<br>
+                        • Pania della Croce gravel roads<br>
+                        • Minimal traffic, pristine mountain terrain</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Day 3: Volterra -->
+        <div class="day-section">
+            <div class="day-header">
+                <div class="day-number">3</div>
+                <div class="day-info">
+                    <h3>Volterra - Etruscan Hills</h3>
+                    <p>Strategic train connection • Hilltop cycling • Ancient ruins</p>
+                </div>
+            </div>
+            <div class="day-content">
+                <div class="day-details">
+                    <div class="accommodation-card">
+                        <div class="price-tag">€105/night</div>
+                        <h4>Hotel Villa Nencini</h4>
+                        <p><strong>Location:</strong> Just outside historic Volterra center<br>
+                        <strong>Features:</strong> Swimming pool, garden terrace, panoramic views<br>
+                        <strong>Alternative:</strong> Hotel Etruria (€95/night) - in historic center</p>
+                        <div class="features">
+                            <div class="feature-badge">🏊 Swimming Pool</div>
+                            <div class="feature-badge">🌅 Panoramic Views</div>
+                            <div class="feature-badge">🚴 Bike Storage</div>
+                        </div>
+                    </div>
+                    <div class="dining-section">
+                        <h4>🍽️ Local Italian Dining</h4>
+                        <div class="restaurant-item">
+                            <div class="restaurant-name">Osteria La Pace</div>
+                            <div class="restaurant-type">Historic (since 1600) • Wild boar stew • €22-32</div>
+                            <div class="local-note">🏛️ Same family since 1939, authentic Volterra classics in vaulted stone room</div>
+                        </div>
+                        <div class="restaurant-item">
+                            <div class="restaurant-name">La Carabaccia</div>
+                            <div class="restaurant-type">Famous ribollita soup • Local wines • €18-28</div>
+                            <div class="local-note">🍲 Family-run trattoria, house specialty filling vegetable soup</div>
+                        </div>
+                        <div class="restaurant-item">
+                            <div class="restaurant-name">Osteria dei Fornelli</div>
+                            <div class="restaurant-type">Countryside views • Handmade pasta • €20-30</div>
+                            <div class="local-note">🌄 "True Tuscan gem" with breathtaking rolling hill views</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="route-map">
+                    <h4>📊 Strategic Route</h4>
+                    <div class="elevation-chart">
+                        <div class="elevation-line" style="clip-path: polygon(0% 100%, 30% 90%, 50% 75%, 70% 45%, 85% 25%, 100% 35%, 100% 100%);"></div>
+                        <div class="elevation-labels">200m → 550m</div>
+                    </div>
+                    <div class="distance-info">
+                        <div class="distance-item">
+                            <div class="distance-value">40km</div>
+                            <div class="distance-label">Cycling Distance</div>
+                        </div>
+                        <div class="distance-item">
+                            <div class="distance-value">650m</div>
+                            <div class="distance-label">Elevation Gain</div>
+                        </div>
+                        <div class="distance-item">
+                            <div class="distance-value">60%</div>
+                            <div class="distance-label">Gravel Content</div>
+                        </div>
+                    </div>
+                    <div class="gravel-info">
+                        <h5>🛤️ Train + Cycling Combination</h5>
+                        <div>• Morning train from Lucca<br>
+                        • Rural roads through olive groves<br>
+                        • Final climb to hilltop Volterra</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Day 4: Siena -->
+        <div class="day-section">
+            <div class="day-header">
+                <div class="day-number">4</div>
+                <div class="day-info">
+                    <h3>Siena - Strade Bianche</h3>
+                    <p>Classic white gravel roads • Chianti hills • UNESCO sites</p>
+                </div>
+            </div>
+            <div class="day-content">
+                <div class="day-details">
+                    <div class="accommodation-card">
+                        <div class="price-tag">€115/night</div>
+                        <h4>Hotel Athena</h4>
+                        <p><strong>Location:</strong> Near Siena's historic center<br>
+                        <strong>Features:</strong> 4-star comfort, panoramic terrace, secure parking<br>
+                        <strong>Alternative:</strong> Hotel Villa Liberty (€95/night)</p>
+                        <div class="features">
+                            <div class="feature-badge">🏛️ Historic Area</div>
+                            <div class="feature-badge">🌅 Panoramic Terrace</div>
+                            <div class="feature-badge">🚗 Secure Parking</div>
+                        </div>
+                    </div>
+                    <div class="dining-section">
+                        <h4>🍽️ Local Italian Dining</h4>
+                        <div class="restaurant-item">
+                            <div class="restaurant-name">Osteria La Sosta di Violante</div>
+                            <div class="restaurant-type">Near Il Campo • Pici pasta specialty • €20-30</div>
+                            <div class="local-note">🍝 Local favorite for Siena's signature pici pasta</div>
+                        </div>
+                        <div class="restaurant-item">
+                            <div class="restaurant-name">Bar Dante</div>
+                            <div class="restaurant-type">Local cyclist hangout in Radda • Simple lunch • €12-18</div>
+                            <div class="local-note">🚴 Where local cyclists stop for lunch in Radda in Chianti</div>
+                        </div>
+                        <div class="restaurant-item">
+                            <div class="restaurant-name">Casa Porciatti</div>
+                            <div class="restaurant-type">Tuscan deli • Picnic supplies • €8-15</div>
+                            <div class="local-note">🧺 Perfect for roadside picnics with brass fountain water</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="route-map">
+                    <h4>📊 Classic Strade Bianche</h4>
+                    <div class="elevation-chart">
+                        <div class="elevation-line" style="clip-path: polygon(0% 100%, 20% 75%, 35% 45%, 50% 25%, 65% 40%, 80% 20%, 95% 35%, 100% 30%, 100% 100%);"></div>
+                        <div class="elevation-labels">550m → 400m</div>
+                    </div>
+                    <div class="distance-info">
+                        <div class="distance-item">
+                            <div class="distance-value">70km</div>
+                            <div class="distance-label">Cycling Distance</div>
+                        </div>
+                        <div class="distance-item">
+                            <div class="distance-value">950m</div>
+                            <div class="distance-label">Elevation Gain</div>
+                        </div>
+                        <div class="distance-item">
+                            <div class="distance-value">75%</div>
+                            <div class="distance-label">Gravel Content</div>
+                        </div>
+                    </div>
+                    <div class="gravel-info">
+                        <h5>🛤️ Premium Strade Bianche Experience</h5>
+                        <div>• Volterra → San Gimignano towers<br>
+                        • Monteriggioni medieval castle<br>
+                        • Classic white gravel through Chianti</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Day 5: Lake Trasimeno -->
+        <div class="day-section">
+            <div class="day-header">
+                <div class="day-number">5</div>
+                <div class="day-info">
+                    <h3>Lake Trasimeno - Swimming Paradise</h3>
+                    <p>Crete Senesi • Val d'Orcia UNESCO • Lake swimming</p>
+                </div>
+            </div>
+            <div class="day-content">
+                <div class="day-details">
+                    <div class="accommodation-card">
+                        <div class="price-tag">€95/night</div>
+                        <h4>Hotel Trasimeno</h4>
+                        <p><strong>Location:</strong> Castiglione del Lago lakefront<br>
+                        <strong>Features:</strong> Lake views, direct swimming access, bike storage<br>
+                        <strong>Alternative:</strong> Hotel da Sauro Isola Maggiore (€105/night)</p>
+                        <div class="features">
+                            <div class="feature-badge swimming">🏊 Lake Access</div>
+                            <div class="feature-badge">🌅 Lake Views</div>
+                            <div class="feature-badge">🍽️ Restaurant</div>
+                        </div>
+                    </div>
+                    <div class="dining-section">
+                        <h4>🍽️ Local Italian
