@@ -1,0 +1,43 @@
+{
+  "name": "Tuscany Gravel Cycling Adventure - Sept 2025",
+  "short_name": "Tuscany Cycling",
+  "description": "6-day gravel cycling itinerary through Tuscany, Sept 12-18, 2025. Pisa to Cortona route with detailed daily plans, accommodation, and dining.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#667eea",
+  "theme_color": "#667eea",
+  "orientation": "portrait-primary",
+  "scope": "./",
+  "lang": "en",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["travel", "sports", "lifestyle"],
+  "shortcuts": [
+    {
+      "name": "Day 1: Pisa to Lucca",
+      "short_name": "Day 1",
+      "description": "Puccini Cycling Path route details",
+      "url": "./index.html#day1",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Flight Info",
+      "short_name": "Flights",
+      "description": "Departure and arrival details",
+      "url": "./index.html#flights",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}
