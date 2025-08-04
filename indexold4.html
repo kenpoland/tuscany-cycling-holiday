@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tuscany Gravel Cycling - Sept 12-18, 2025</title>
+    
+    <!-- PWA Meta Tags -->
+    <meta name="description" content="6-day gravel cycling itinerary through Tuscany, Sept 12-18, 2025. Pisa to Cortona route with detailed daily plans, accommodation, and dining.">
+    <meta name="theme-color" content="#667eea">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Tuscany Cycling">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Icons -->
+    <link rel="icon" type="image/png" sizes="32x32" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚴</text></svg>">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚴</text></svg>">
+    
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .install-banner {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: #333;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            z-index: 1000;
+        }
+        
+        .install-banner.show {
+            display: block;
+        }
+        
+        .install-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+        
+        .close-banner {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        .route-overview {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .route-visual {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            border-radius: 15px;
+        }
+        .route-point {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            min-width: 80px;
+        }
+        .route-circle {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .route-arrow {
+            font-size: 1.5em;
+            color: #666;
+            margin: 0 10px;
+        }
+        .city-name {
+            font-size: 0.9em;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .day-section {
+            background: white;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .day-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .day-number {
+            background: rgba(255,255,255,0.2);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.5em;
+        }
+        .day-info h3 {
+            margin: 0 0 10px 0;
+            font-size: 1.8em;
+        }
+        .day-info p {
+            margin: 0;
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+        
+        .day-content {
+            padding: 30px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        .day-details {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .accommodation-card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #e74c3c;
+        }
+        .accommodation-card h4 {
+            margin: 0 0 10px 0;
+            color: #333;
+            font-size: 1.3em;
+        }
+        .price-tag {
+            background: #e74c3c;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+        .features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        .feature-badge {
+            background: #27ae60;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.85em;
+            display: inline-block;
+        }
+        .swimming { background: #3498db; }
+        .gravel { background: #e67e22; }
+        .train { background: #9b59b6; }
+        .thermal { background: #e74c3c; }
+        .local-fav { background: #e91e63; }
+        
+        .route-map {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .elevation-chart {
+            width: 100%;
+            height: 150px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 8px;
+            margin: 15px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        .elevation-line {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 70%;
+            background: rgba(255,255,255,0.3);
+            border-radius: 0 0 8px 8px;
+        }
+        .elevation-labels {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            color: white;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+        .distance-info {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .distance-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .distance-value {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #e74c3c;
+        }
+        .distance-label {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .gravel-info {
+            background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+        .gravel-info h5 {
+            margin: 0 0 10px 0;
+            font-size: 1.1em;
+        }
+        
+        .dining-section {
+            margin-top: 20px;
+            padding: 20px;
+            background: linear-gradient(135deg, #e8f5e8 0%, #d4edda 100%);
+            border-radius: 10px;
+        }
+        .dining-section h4 {
+            margin: 0 0 15px 0;
+            color: #155724;
+        }
+        .restaurant-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .restaurant-name {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        .restaurant-type {
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 5px;
+        }
+        .local-note {
+            background: #ffe6e6;
+            color: #721c24;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.85em;
+            margin-top: 8px;
+            border-left: 3px solid #e91e63;
+        }
+        
+        .stats {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+        }
+        .stat-item {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 2em;
+            font-weight: bold;
+            display: block;
+        }
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+        
+        @media (max-width: 768px) {
+            .day-content {
+                grid-template-columns: 1fr;
+            }
+            .distance-info {
+                grid-template-columns: 1fr;
+            }
+            .route-visual {
+                flex-direction: column;
+            }
+            .route-arrow {
+                transform: rotate(90deg);
+                margin: 10px 0;
+            }
+        }
+        
+        /* Offline indicator */
+        .offline-indicator {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #ff6b6b;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 20px;
+            display: none;
+            z-index: 1000;
+        }
+        
+        .offline-indicator.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <!-- Install Banner -->
+    <div class="install-banner" id="installBanner">
+        📱 Install this app for offline access!
+        <button class="install-btn" id="installBtn">Install</button>
+        <button class="close-banner" id="closeBanner">×</button>
+    </div>
+    
+    <!-- Offline Indicator -->
+    <div class="offline-indicator" id="offlineIndicator">
+        📶 You're offline - using cached version
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1>🚴‍♂️ Tuscany Gravel Cycling Adventure</h1>
+            <p>6 Days • September 12-18, 2025 • Pisa → Cortona → Pisa</p>
+        </div>
+        
+        <div class="route-overview">
+            <h2>📍 Your 6-Day Gravel Adventure Route</h2>
+            <div class="route-visual">
+                <div class="route-point">
+                    <div class="route-circle" style="background: #e74c3c;">1</div>
+                    <div class="city-name">PISA</div>
+                </div>
+                <div class="route-arrow">🚴</div>
+                <div class="route-point">
+                    <div class="route-circle" style="background: #27ae60;">2</div>
+                    <div class="city-name">LUCCA</div>
+                </div>
+                <div class="route-arrow">🚴</div>
+                <div class="route-point">
+                    <div class="route-circle" style="background: #f39c12;">3</div>
+                    <div class="city-name">VOLTERRA</div>
+                </div>
+                <div class="route-arrow">🚴</div>
+                <div class="route-point">
+                    <div class="route-circle" style="background: #e67e22;">4</div>
+                    <div class="city-name">SIENA</div>
+                </div>
+                <div class="route-arrow">🚴</div>
+                <div class="route-point">
+                    <div class="route-circle" style="background: #3498db;">5</div>
+                    <div class="city-name">LAKE TRASIMENO</div>
+                </div>
+                <div class="route-arrow">🚴</div>
+                <div class="route-point">
+                    <div class="route-circle" style="background: #9b59b6;">6</div>
+                    <div class="city-name">CORTONA</div>
+                </div>
+                <div class="route-arrow">🚂</div>
+                <div class="route-point">
+                    <div class="route-circle" style="background: #e74c3c;">✈️</div>
+                    <div class="city-name">PISA</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Day 1: Friday Sept 12 - Pisa to Lucca -->
+        <div class="day-section">
+            <div class="day-header">
+                <div class="day-number">1</div>
+                <div class="day-info">
+                    <h3>Day 1 - Friday Sept 12: Pisa to Lucca</h3>
+                    <p>Arrival 11:55 AM • Bike collection • Puccini Path • Optional beach</p>
+                </div>
+            </div>
+            <div class="day-content">
+                <div class="day-details">
+                    <div class="accommodation-card">
+                        <div class="price-tag">€75/night</div>
+                        <h4>B&B Al Battistero (Lucca)</h4>
+                        <p><strong>Location:</strong> Historic center within Lucca's walls<br>
+                        <strong>Features:</strong> Family-run, excellent breakfast, bike storage<br>
+                        <strong>Check-in:</strong> Evening after cycling from Pisa</p>
+                        <div class="features">
+                            <div class="feature-badge">🏰 Historic Walls</div>
+                            <div class="feature-badge">🚴 Bike Storage</div>
+                            <div class="feature-badge">🍳 Great Breakfast</div>
+                            <div class="feature-badge swimming">🏊 Beach Option</div>
+                        </div>
+                    </div>
+                    <div class="dining-section">
+                        <h4>🍽️ Lunch Stop</h4>
+                        <div class="restaurant-item">
+                            <div class="restaurant-name">Osteria San Giorgio</div>
+                            <div class="restaurant-type">En route • Traditional soups & pasta • €12-18</div>
+                            <div class="local-note">🌟 Perfect mid-route stop, beloved by local cyclists</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="route-map">
+                    <h4>📊 Day 1 Route Profile</h4>
+                    <div class="elevation-chart">
+                        <div class="elevation-line" style="clip-path: polygon(0% 100%, 30% 90%, 60% 95%, 80% 85%, 100% 80%, 100% 100%);"></div>
+                        <div class="elevation-labels">Sea Level → 50m</div>
+                    </div>
+                    <div class="distance-info">
+                        <div class="distance-item">
+                            <div class="distance-value">75km</div>
+                            <div class="distance-label">Scenic Route</div>
+                        </div>
+                        <div class="distance-item">
+                            <div class="distance-value">5.5h</div>
+                            <div class="distance-label">With Swimming</div>
+                        </div>
+                        <div class="distance-item">
+                            <div class="distance-value">650m</div>
+                            <div class="distance-label">Elevation Gain</div>
+                        </div>
+                    </div>
+                    <div class="gravel-info">
+                        <h5>🌍 UNESCO Highlights</h5>
+                        <div>• Crete Senesi clay hills<br>
+                        • Val d'Orcia cypress-lined roads<br>
+                        • Afternoon swimming at Lake Trasimeno</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Remaining days and stats section would continue here... -->
+        
+        <div class="stats">
+            <h2>📊 6-Day Adventure Summary</h2>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <span class="stat-value">282</span>
+                    <div class="stat-label">Total Kilometers</div>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value">6</span>
+                    <div class="stat-label">Cycling Days</div>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value">€82</span>
+                    <div class="stat-label">Avg Hotel/Night</div>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value">75%</span>
+                    <div class="stat-label">Gravel Content</div>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value">3</span>
+                    <div class="stat-label">Swimming Spots</div>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value">2,850m</span>
+                    <div class="stat-label">Total Climbing</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // PWA Installation
+        let deferredPrompt;
+        const installBanner = document.getElementById('installBanner');
+        const installBtn = document.getElementById('installBtn');
+        const closeBanner = document.getElementById('closeBanner');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            installBanner.classList.add('show');
+        });
+
+        installBtn.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                deferredPrompt = null;
+                installBanner.classList.remove('show');
+            }
+        });
+
+        closeBanner.addEventListener('click', () => {
+            installBanner.classList.remove('show');
+        });
+
+        window.addEventListener('appinstalled', () => {
+            installBanner.classList.remove('show');
+        });
+
+        // Online/Offline detection
+        const offlineIndicator = document.getElementById('offlineIndicator');
+
+        window.addEventListener('online', () => {
+            offlineIndicator.classList.remove('show');
+        });
+
+        window.addEventListener('offline', () => {
+            offlineIndicator.classList.add('show');
+        });
+
+        // Service Worker Registration (uncomment after uploading to GitHub)
+        /*
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                    .then((registration) => {
+                        console.log('SW registered: ', registration);
+                    })
+                    .catch((registrationError) => {
+                        console.log('SW registration failed: ', registrationError);
+                    });
+            });
+        }
+        */
+    </script>
+</body>
+</html>
